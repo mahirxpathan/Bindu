@@ -1,31 +1,6 @@
 """Tests for Ory configuration models."""
 
-import pytest
-from bindu.settings import (
-    KratosConfig,
-    OAuthProviderConfig,
-)
-
-
-class TestKratosConfig:
-    """Test Kratos configuration."""
-
-    def test_default_config(self):
-        """Test default Kratos configuration."""
-        config = KratosConfig()
-        assert config.enabled is True
-        assert config.timeout == 10
-
-    def test_valid_encryption_key(self):
-        """Test valid encryption key."""
-        key = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="  # pragma: allowlist secret
-        config = KratosConfig(encryption_key=key)
-        assert config.encryption_key == key
-
-    def test_invalid_encryption_key(self):
-        """Test invalid encryption key."""
-        with pytest.raises(ValueError):
-            KratosConfig(encryption_key="invalid")  # pragma: allowlist secret
+from bindu.settings import OAuthProviderConfig
 
 
 class TestOAuthProviderConfig:

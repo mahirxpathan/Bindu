@@ -539,53 +539,6 @@ class OAuthProviderConfig(BaseModel):
     redirect_uri: HttpUrl = Field(..., description="Redirect URI")
 
 
-class KratosConfig(BaseModel):
-    """Kratos identity management configuration."""
-
-    enabled: bool = Field(default=True, description="Enable Kratos identity management")
-    admin_url: HttpUrl = Field(
-        default="http://localhost:4434", description="Kratos Admin API URL"
-    )
-    public_url: HttpUrl = Field(
-        default="http://localhost:4433", description="Kratos Public API URL"
-    )
-    timeout: int = Field(default=10, description="Request timeout in seconds")
-    verify_ssl: bool = Field(default=False, description="Verify SSL certificates")
-
-    # Encryption settings
-    encryption_key: Optional[str] = Field(
-        default=None,
-        description="Fernet key for encrypting OAuth tokens (32-byte URL-safe base64)",
-    )
-
-    # Identity schema
-    default_schema_id: str = Field(
-        default="default", description="Default identity schema ID"
-    )
-
-    # Session settings
-    session_lifespan: int = Field(
-        default=2592000, description="Session lifespan in seconds (30 days)"
-    )
-
-    @validator("encryption_key")
-    def validate_encryption_key(cls, v):
-        """Validate encryption key format."""
-        if v is None:
-            return v
-
-        import base64
-
-        try:
-            # Check if it's a valid Fernet key (32-byte URL-safe base64)
-            decoded = base64.urlsafe_b64decode(v)
-            if len(decoded) != 32:
-                raise ValueError("Encryption key must be 32 bytes when decoded")
-            return v
-        except Exception as e:
-            raise ValueError(f"Invalid encryption key: {e}")
-
-
 # ============================================================================
 # Hydra Settings
 # ============================================================================

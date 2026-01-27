@@ -1,6 +1,6 @@
 """Authentication package for Bindu.
 
-This package provides authentication clients and utilities for Ory Hydra and Kratos.
+This package provides authentication clients and utilities for Ory Hydra OAuth2/OIDC.
 """
 
 from __future__ import annotations as _annotations
