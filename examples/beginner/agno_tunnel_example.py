@@ -1,10 +1,12 @@
-"""Example of creating a research assistant agent using Bindu and Agno.
+"""Example of creating a research assistant agent with public tunnel access.
 
-This example demonstrates how to create a simple research assistant agent
-that uses DuckDuckGo for web searches and can be deployed as a Bindu agent.
+This example demonstrates how to create a Bindu agent that is accessible
+from anywhere on the internet using FRP tunneling.
 
-Run with: bindu examples/agno_simple_example.py
-Or set environment variables directly and run: python examples/agno_simple_example.py
+Simply add launch=True to bindufy() to enable public access!
+
+Run with:
+    python examples/beginner/agno_tunnel_example.py
 """
 
 import os
@@ -25,12 +27,10 @@ agent = Agent(
 )
 
 # Configuration
-# Note: Infrastructure configs (storage, scheduler, sentry, API keys) are now
-# automatically loaded from environment variables. See .env.example for details.
 config = {
     "author": "your.email@example.com",
     "name": "research_agent",
-    "description": "A research assistant agent",
+    "description": "A research assistant agent accessible from anywhere",
     "deployment": {"url": "http://localhost:3773", "expose": True},
     "skills": ["skills/question-answering", "skills/pdf-processing"],
 }
@@ -50,8 +50,9 @@ def handler(messages: list[dict[str, str]]):
     return result
 
 
-# Bindu-fy it
-bindufy(config, handler)
+# Enable public tunnel with launch=True - that's it!
+bindufy(config, handler, launch=True)
 
-# To make your agent publicly accessible via tunnel, add launch=True:
-# bindufy(config, handler, launch=True)
+# The agent will be accessible at:
+# - Local: http://localhost:3773
+# - Public: https://<random-subdomain>.tunnel.getbindu.com (auto-generated)
